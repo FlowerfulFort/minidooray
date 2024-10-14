@@ -40,7 +40,8 @@ eureka:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://${eureka-server.host}:${eureka-server.port}/eureka
+      defaultZone: http://admin:1234@${eureka-server.host}:${eureka-server.port}/eureka
+#      defaultZone: http://${eureka-server.host}:${eureka-server.port}/eureka
 
 ---
 spring:

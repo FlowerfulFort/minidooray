@@ -17,9 +17,24 @@ spring:
 server:
   port: 8078
 
+eureka-server:
+  host: localhost
+  port: 8079
+
 eureka:
   client:
     register-with-eureka: true
     fetch-registry: true
     service-url:
-      defaultZone: http://eureka:8079/eureka
+      defaultZone: http://admin:1234@${eureka-server.host}:${eureka-server.port}/eureka
+#      defaultZone: http://eureka:8079/eureka
+
+---
+spring:
+  config:
+    activate:
+      on-active: docker-eureka
+
+eureka-server:
+  host: eureka
+  port: 8079
