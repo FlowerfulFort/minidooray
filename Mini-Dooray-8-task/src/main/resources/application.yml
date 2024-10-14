@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: Mini-Dooray-8-task
+
+logging:
+  level:
+    org.hibernate.orm.jdbc.bind: trace
+    org.springframework.transaction.interceptor: trace
+
+server:
+  port: 8082
+
+eureka-server:
+  host: eureka
+  port: 8079
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka-server.host}:${eureka-server.port}/eureka

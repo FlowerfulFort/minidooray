@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: gateway-router
+  cloud:
+    gateway:
+      routes:
+        - id: account-service
+          uri: lb://minidooray
+          predicates:
+            - Path=/api/accounts/**
+
+        - id: task-service
+          uri: lb://Mini-Dooray-8-task
+          predicates:
+            - Path=/api/projects/**
+
+server:
+  port: 8078
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://eureka:8079/eureka

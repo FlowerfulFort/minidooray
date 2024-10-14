@@ -1,0 +1,71 @@
+version: '3'
+
+services:
+  account:
+    container_name: account
+    build:
+      context: ./Mini-Dooray-8-account
+    image: flowerfulfort/dooray-account
+    expose:
+      - 8081
+#    ports:
+#      - 8081
+    depends_on:
+      - eureka
+      - gateway
+#    ports:
+#      - 8081:8081
+
+  task:
+    container_name: task
+    build:
+      context: ./Mini-Dooray-8-task
+    image: flowerfulfort/dooray-task
+    expose:
+      - 8082
+#    ports:
+#      - 8082
+    depends_on:
+      - eureka
+      - gateway
+#    ports:
+#    - 8082:8082
+
+  front:
+    container_name: front
+    build:
+      context: ./minidooray-gateway
+    image: flowerfulfort/dooray-front
+    ports:
+      - 8080:8080
+    depends_on:
+      - account
+      - task
+      - redis
+      - eureka
+  eureka:
+    container_name: eureka
+    build:
+      context: ./spring-eureka-server
+    image: flowerfulfort/dooray-eureka
+    ports:
+      - 8079:8079
+
+  gateway:
+    container_name: gateway
+    build:
+      context: ./spring-gateway
+    expose:
+      - 8078
+#    ports:
+#      - 8078:8078
+    depends_on:
+      - eureka
+
+  redis:
+    container_name: redis-session
+    image: redis
+    expose:
+      - 6379
+#    ports:
+#      - 6379

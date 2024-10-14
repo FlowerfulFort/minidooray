@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Task - [[${task.title}]]</title>
+    <th:block th:replace="~{components/commons :: bootstrap}" />
+    <style>
+        #taskContent {
+            min-height: 200px;
+            border-top: 1px solid gray;
+            border-bottom: 1px solid gray;
+            padding: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+<th:block th:replace="~{components/commons :: header(${project.title})}" />
+<div class="container p-3">
+    <div class="d-flex flex-column" id="projectDetails">
+<!--        태그-->
+        <div class="task-tags mb-1" th:text="${#strings.listJoin(task.tags, ' / ')}"></div>
+<!--        태스트 타이틀-->
+        <div class="d-flex flex-row align-items-center">
+            <div class="display-4 flex-grow-1" th:text="${task.title}"></div>
+            <a th:if="${project.authorId == #authorization.authentication.name}" th:href="@{/task/delete(pid=${project.id}, tid=${task.id})}" class="btn btn-outline-danger" >삭제</a>
+
+        </div>
+<!--        태스크에 할당된 마일스톤-->
+        <div class="ms-auto mb-2"
+             th:text="|${task.milestone.title}: ${#temporals.format(task.milestone.startDate, 'yyyy-MM-dd')} ~ ${#temporals.format(task.milestone.endDate, 'yyyy-MM-dd')}|"
+        ></div>
+
+<!--        태스크 내용-->
+        <div id="taskContent" >
+            <p th:each="line: ${#strings.listSplit(task.content, ls)}" th:text="${line}"></p>
+        </div>
+
+<!--        태스트 댓글-->
+        <div class="mb-2" th:each="comment: ${task.comments}">
+            <div style="border-bottom: 1px solid black;">
+                <div class="d-flex flex-row my-1">
+                    <div class="flex-grow-1">
+                        <div th:text="|작성자: ${comment.authorId}|"></div>
+                        <div th:text="|작성 일시: ${#temporals.format(comment.createdAt, 'yyyy-MM-dd HH:mm:ss')}|"></div>
+                    </div>
+                    <a th:if="${comment.authorId == #authorization.authentication.name}" th:href="@{/comment/delete(pid=${task.projectId}, tid=${task.id}, cid=${comment.id})}" class="btn btn-outline-danger">삭제</a>
+                </div>
+                <div class="my-3" th:text="${comment.content}"></div>
+            </div>
+        </div>
+
+<!--        댓글 등록 폼-->
+        <form class="d-flex flex-column" th:action="@{/comment/create(pid=${task.projectId}, tid=${task.id})}" method="post">
+<!--            <input name="taskId" th:value="${task.id}" hidden />-->
+            <input name="authorId" th:value="${#authorization.authentication.name}" hidden="" />
+            <textarea name="content" class="mb-2 p-2" style="width: 100%; height: 80px;" placeholder="Comment here..."></textarea>
+            <button type="submit" class="ms-auto btn btn-primary">댓글 등록</button>
+        </form>
+    </div>
+</div>
+</body>
+<th:block th:replace="~{components/commons :: bootstrap_script}" />
+</html>

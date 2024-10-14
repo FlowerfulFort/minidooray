@@ -1,0 +1,22 @@
+spring:
+  application:
+    name: minidooray
+
+#logging:
+#  level:
+#    org.springframework.web: DEBUG
+#    org.springframework.web.filter.CommonsRequestLoggingFilter: DEBUG
+
+server:
+  port: 8081  # 애플리케이션 포트 설정
+
+eureka-server:
+  host: eureka
+  port: 8079
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka-server.host}:${eureka-server.port}/eureka

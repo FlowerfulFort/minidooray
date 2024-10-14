@@ -1,0 +1,144 @@
+spring:
+  application:
+    name: minidooray-gateway
+  profiles:
+    active: local-eureka
+#  cloud:
+#    gateway:
+#      routes:
+#        - id: account-service
+#          uri: lb://minidooray
+#          predicates:
+#            - Path=/api/accounts/**
+#        - id: task-service
+#          uri: lb://Mini-Dooray-8-task
+#          predicates:
+#            - Path=/api/projects/**
+
+server:
+  port: 8080
+
+dooray:
+  account:
+    host: localhost
+    port: 8081
+  task:
+    host: localhost
+    port: 8082
+
+redis:
+  host: localhost
+  port: 6379
+
+eureka-server:
+  host: localhost
+  port: 8079
+
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://${eureka-server.host}:${eureka-server.port}/eureka
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+dooray:
+  account:
+    host: localhost
+    port: 8082
+  task:
+    host: localhost
+    port: 8082
+
+redis:
+  host: localhost
+  port: 6379
+
+logging:
+  level:
+    com.nhnacademy.minidooray: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+
+dooray:
+  account:
+    host: account
+    port: 8081
+  task:
+    host: task
+    port: 8082
+
+redis:
+  host: redis
+  port: 6379
+
+eureka-server:
+  host: eureka
+  port: 8079
+
+logging:
+  level:
+    com.nhnacademy.minidooray: trace
+
+---
+spring:
+  config:
+    activate:
+      on-profile: docker-eureka
+
+dooray:
+  account:
+    host: gateway
+    port: 8078
+  task:
+    host: gateway
+    port: 8078
+
+redis:
+  host: redis
+  port: 6379
+
+eureka-server:
+  host: eureka
+  port: 8079
+
+logging:
+  level:
+    com.nhnacademy.minidooray: trace
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: local-eureka
+
+dooray:
+  account:
+    host: localhost
+    port: 8078
+  task:
+    host: localhost
+    port: 8078
+
+redis:
+  host: localhost
+  port: 6379
+
+eureka-server:
+  host: localhost
+  port: 8079
+
+logging:
+  level:
+    com.nhnacademy.minidooray: trace
