@@ -55,6 +55,7 @@ services:
     container_name: gateway
     build:
       context: ./spring-gateway
+    image: flowerfulfort/dooray-gateway
     expose:
       - 8078
 #    ports:
